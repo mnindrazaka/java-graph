@@ -1,13 +1,13 @@
 import java.util.*;
 
 public class Graph<T> {
-    private Map<T, List<T>> map = new HashMap<>();
+    protected Map<T, List<T>> map = new HashMap<>();
 
-    public void addVertex(T source) {
+    protected void addVertex(T source) {
         map.put(source, new LinkedList<>());
     }
 
-    public void addEdge(T source, T destination, boolean bidirectional) {
+    protected void addEdge(T source, T destination, boolean bidirectional) {
         if (!map.containsKey(source))
             addVertex(source);
 
@@ -19,11 +19,11 @@ public class Graph<T> {
             map.get(destination).add(source);
     }
 
-    public int getVertexCount() {
+    protected int getVertexCount() {
         return map.keySet().size();
     }
 
-    public int getEdgesCount(boolean bidirectional) {
+    protected int getEdgesCount(boolean bidirectional) {
         int count = 0;
         for (T vertex : map.keySet()) {
             count += map.get(vertex).size();
@@ -35,11 +35,11 @@ public class Graph<T> {
         return count;
     }
 
-    public boolean hasVertex(T source) {
+    protected boolean hasVertex(T source) {
         return map.containsKey(source);
     }
 
-    public boolean hasEdge(T source, T destination) {
+    protected boolean hasEdge(T source, T destination) {
         return map.get(source).contains(destination);
     }
 

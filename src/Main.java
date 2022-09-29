@@ -1,23 +1,131 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        Graph<Integer> g = new Graph<>();
+        PeopleNetwork network = new PeopleNetwork();
 
-        g.addEdge(0, 1, true);
-        g.addEdge(0, 4, true);
-        g.addEdge(1, 2, true);
-        g.addEdge(1, 3, true);
-        g.addEdge(1, 4, true);
-        g.addEdge(2, 3, true);
-        g.addEdge(3, 4, true);
+        People aka = new People("Aka");
+        People danny = new People("Danny");
+        People agung = new People("Agung");
+        People doni = new People("Doni");
+        People andri = new People("Andri");
+        People ilham = new People("Ilham");
+        People indra = new People("Indra");
+        People fanny = new People("Fanny");
+        People natan = new People("Natan");
 
-        System.out.println("Graph:\n" + g);
+        network.addPeople(aka);
+        network.addPeople(danny);
+        network.addPeople(agung);
+        network.addPeople(doni);
+        network.addPeople(andri);
+        network.addPeople(ilham);
+        network.addPeople(indra);
+        network.addPeople(fanny);
+        network.addPeople(natan);
 
-        System.out.println(g.getVertexCount());
+        network.addConnection(aka, danny);
+        network.addConnection(aka, agung);
+        network.addConnection(aka, doni);
+        network.addConnection(aka, andri);
+        network.addConnection(aka, ilham);
+        network.addConnection(aka, indra);
+        network.addConnection(aka, fanny);
+        network.addConnection(aka, natan);
 
-        System.out.println(g.getEdgesCount(true));
+        network.addConnection(danny, agung);
+        network.addConnection(danny, doni);
+        network.addConnection(danny, andri);
+        network.addConnection(danny, ilham);
+        network.addConnection(danny, indra);
+        network.addConnection(danny, natan);
 
-        System.out.println(g.hasEdge(3, 4));
+        network.addConnection(agung, doni);
+        network.addConnection(agung, andri);
+        network.addConnection(agung, ilham);
 
-        System.out.println(g.hasVertex(5));
+        network.addConnection(doni, andri);
+        network.addConnection(doni, ilham);
+
+        network.addConnection(andri, ilham);
+        network.addConnection(andri, indra);
+
+        network.addConnection(ilham, indra);
+        network.addConnection(ilham, fanny);
+        network.addConnection(ilham, natan);
+
+        Scanner scan = new Scanner(System.in);
+        int option;
+
+
+        do {
+            System.out.println("People Network Management");
+            System.out.println("What do you want to do ?");
+            System.out.println("1. Show people list");
+            System.out.println("2. Add new people");
+            System.out.println("3. Add connection");
+            System.out.println("4. Show connection");
+            System.out.println("5. Show connection suggestion");
+            System.out.println("6. Exit");
+
+            System.out.print("Input your option : ");
+            option = scan.nextInt();
+            scan.nextLine();
+
+            if (option == 1) {
+                network.printPeopleList();
+                scan.nextLine();
+            } else if (option == 2) {
+                System.out.print("Input name : ");
+                String name = scan.nextLine();
+
+                People people = new People(name);
+                network.addPeople(people);
+            } else if (option == 3) {
+                System.out.print("Input source name : ");
+                String sourceName = scan.nextLine();
+
+                People source = network.getPeopleByName(sourceName);
+                if (source == null) {
+                    System.out.println("People not found");
+                    continue;
+                }
+
+                System.out.print("Input destination name : ");
+                String destinationName = scan.nextLine();
+
+                People destination = network.getPeopleByName(destinationName);
+                if (destination == null) {
+                    System.out.println("People not found");
+                    continue;
+                }
+
+                network.addConnection(source, destination);
+            } else if (option == 4) {
+                System.out.print("Input name : ");
+                String sourceName = scan.nextLine();
+
+                People source = network.getPeopleByName(sourceName);
+                if (source == null) {
+                    System.out.println("People not found");
+                }
+                network.printConnection(source);
+                scan.nextLine();
+            } else if (option == 5) {
+                System.out.print("Input name : ");
+                String sourceName = scan.nextLine();
+
+                People source = network.getPeopleByName(sourceName);
+                if (source == null) {
+                    System.out.println("People not found");
+                }
+                network.printConnectionSuggestion(source);
+                scan.nextLine();
+            } else if (option == 6) {
+                System.out.println("Thank you");
+            } else {
+                System.out.println("Invalid input");
+            }
+        } while (option != 5);
     }
 }
